@@ -67,7 +67,7 @@ client = AzureOpenAI(
 def turn_text_to_voice(response_text, output_path):
     tts = gTTS(text=response_text, lang='en')
     tts.save(output_path)
-    
+
 #-------------------------------------------
 #def turn_text_to_voice(response_text):
     # speech_config = speechsdk.SpeechConfig(subscription=AZURE_SPEECH_KEY, region=AZURE_REGION)
@@ -116,7 +116,7 @@ async def upload_audio(file: UploadFile = File(...)):
 
     MESSAGES = [
     #{"role": "system", "content": "You are a doctor's assistant. Be kind, patient, gentle, friendly, and understanding. Speak with empathy, act delicately, and approach situations with calm logic."},
-    {"role": "system", "content": "You are a doctor's assistant. Be kind, patient, gentle, friendly, and understanding. Speak with empathy, act delicately, and approach situations with calm logic."},
+    {"role": "system", "content": "You are a council housing assistant. Your approach should be helpful, clear, warm, and friendly. Always be respectful, patient, and reassuring. Use simple language to make information easy to understand."},
     {"role": "user", "content": result["text"]},
 ]
 
