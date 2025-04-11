@@ -59,9 +59,9 @@ def turn_text_to_voice(response_text,output_path):
     # Optionally, change volume (range from 0.0 to 1.0)
     engine.setProperty('volume', 1.0)  # Full volume
 
-    engine.say(response_text)
+    #engine.say(response_text)
     engine.save_to_file(response_text, output_path)
-    #engine.runAndWait()
+    engine.runAndWait()
 
 #-------------------------------------------
 #def turn_text_to_voice(response_text):
@@ -132,4 +132,4 @@ async def upload_audio(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="localhost", port=8000)
