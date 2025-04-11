@@ -1,0 +1,5 @@
+openai
+pyttsx3
+tomli
+git+https://github.com/openai/whisper.git
+azure-cognitiveservices-speech
