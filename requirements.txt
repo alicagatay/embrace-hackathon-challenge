@@ -1,5 +1,9 @@
 openai
 pyttsx3
 tomli
+fastapi
+pydub
+python-multipart
+uvicorn
 git+https://github.com/openai/whisper.git
 azure-cognitiveservices-speech
