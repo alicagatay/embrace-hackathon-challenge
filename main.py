@@ -25,7 +25,7 @@ app = FastAPI()
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-try:  
+try:
     with open("config.toml", "rb") as f:
         toml_dict = tomli.load(f)
 
@@ -68,8 +68,8 @@ def turn_text_to_voice(response_text, output_path):
     tts = gTTS(text=response_text, lang='en')
     tts.save(output_path)
 
-#-------------------------------------------
-#def turn_text_to_voice(response_text):
+# -------------------------------------------
+# def turn_text_to_voice(response_text):
     # speech_config = speechsdk.SpeechConfig(subscription=AZURE_SPEECH_KEY, region=AZURE_REGION)
     # speech_config.speech_synthesis_voice_name = "en-US-JennyNeural"  # You can change the voice
 
@@ -87,7 +87,7 @@ def turn_text_to_voice(response_text, output_path):
     #     if cancellation.reason == speechsdk.CancellationReason.Error:
     #         print("Error details: {}".format(cancellation.error_details))
 
-#------------------------------------------
+# ------------------------------------------
 # audio_config = speechsdk.audio.AudioOutputConfig(filename="output.wav")
 # speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
 # speech_synthesizer.speak_text_async(response_text).get()
@@ -112,13 +112,13 @@ async def upload_audio(file: UploadFile = File(...)):
 
     model = whisper.load_model("base")
     result = model.transcribe(temp_file)
-    print("user:",result["text"])
+    print("user:", result["text"])
 
     MESSAGES = [
-    #{"role": "system", "content": "You are a doctor's assistant. Be kind, patient, gentle, friendly, and understanding. Speak with empathy, act delicately, and approach situations with calm logic."},
-    {"role": "system", "content": "You are a council housing assistant. Your approach should be helpful, clear, warm, and friendly. Always be respectful, patient, and reassuring. Use simple language to make information easy to understand."},
-    {"role": "user", "content": result["text"]},
-]
+        # {"role": "system", "content": "You are a doctor's assistant. Be kind, patient, gentle, friendly, and understanding. Speak with empathy, act delicately, and approach situations with calm logic."},
+        {"role": "system", "content": "You are a council housing assistant. Your approach should be helpful, clear, warm, and friendly. Always be respectful, patient, and reassuring. Use simple language to make information easy to understand, don't redirect user to any website and provide direct answers, say that they can ask for guidance from the specific department within the Birmingham City Council if needed."},
+        {"role": "user", "content": result["text"]},
+    ]
 
     completion = client.chat.completions.create(
         model=MODEL_NAME,
@@ -126,11 +126,11 @@ async def upload_audio(file: UploadFile = File(...)):
         max_tokens=100,
     )
 
-    #print(completion.model_dump_json(indent=2))
+    # print(completion.model_dump_json(indent=2))
     response_text = completion.choices[0].message.content
-    print("\nAssistant:",response_text)
+    print("\nAssistant:", response_text)
 
-    turn_text_to_voice(response_text,output_file)
+    turn_text_to_voice(response_text, output_file)
 
     # Return the converted audio file as response
     return FileResponse(output_file, media_type="audio/mp3")
