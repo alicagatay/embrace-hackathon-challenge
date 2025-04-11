@@ -45,7 +45,7 @@ client = AzureOpenAI(
 )
 
 
-def turn_text_to_voice(response_text):
+def turn_text_to_voice(response_text,output_path):
     engine = pyttsx3.init()
 
     voices = engine.getProperty('voices')
@@ -60,7 +60,8 @@ def turn_text_to_voice(response_text):
     engine.setProperty('volume', 1.0)  # Full volume
 
     engine.say(response_text)
-    engine.runAndWait()
+    engine.save_to_file(response_text, output_path)
+    #engine.runAndWait()
 
 #-------------------------------------------
 #def turn_text_to_voice(response_text):
@@ -98,13 +99,14 @@ async def upload_audio(file: UploadFile = File(...)):
     audio = AudioSegment.from_file(file_location)
 
     # Set the output file path for MP3 format
+    temp_file = os.path.join(UPLOAD_DIR, "temp_audio.mp3")
     output_file = os.path.join(UPLOAD_DIR, "output_audio.mp3")
 
     # Convert the audio to MP3 format
-    audio.export(output_file, format="mp3")
+    audio.export(temp_file, format="mp3")
 
     model = whisper.load_model("base")
-    result = model.transcribe(output_file)
+    result = model.transcribe(temp_file)
     print("user:",result["text"])
 
     MESSAGES = [
@@ -123,7 +125,7 @@ async def upload_audio(file: UploadFile = File(...)):
     response_text = completion.choices[0].message.content
     print("\nAssistant:",response_text)
 
-    turn_text_to_voice(response_text)
+    turn_text_to_voice(response_text,output_file)
 
     # Return the converted audio file as response
     return FileResponse(output_file, media_type="audio/mp3")
