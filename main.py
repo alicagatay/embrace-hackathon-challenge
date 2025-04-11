@@ -4,6 +4,7 @@ import whisper
 import azure.cognitiveservices.speech as speechsdk
 
 import pyttsx3
+from gtts import gTTS
 
 # model = whisper.load_model("base")
 # result = model.transcribe("Test/1.mp3")
@@ -45,24 +46,28 @@ client = AzureOpenAI(
 )
 
 
-def turn_text_to_voice(response_text,output_path):
-    engine = pyttsx3.init()
+# def turn_text_to_voice(response_text,output_path):
+#     engine = pyttsx3.init()
 
-    voices = engine.getProperty('voices')
+#     voices = engine.getProperty('voices')
 
-    # Set the desired voice (e.g., choosing the second voice)
-    engine.setProperty('voice', voices[1].id)  # Change the index as needed
+#     # Set the desired voice (e.g., choosing the second voice)
+#     engine.setProperty('voice', voices[1].id)  # Change the index as needed
 
-    # Optionally, change rate (speed of speech)
-    engine.setProperty('rate', 150)  # Default is 200, lower values make the speech slower
+#     # Optionally, change rate (speed of speech)
+#     engine.setProperty('rate', 150)  # Default is 200, lower values make the speech slower
 
-    # Optionally, change volume (range from 0.0 to 1.0)
-    engine.setProperty('volume', 1.0)  # Full volume
+#     # Optionally, change volume (range from 0.0 to 1.0)
+#     engine.setProperty('volume', 1.0)  # Full volume
 
-    #engine.say(response_text)
-    engine.save_to_file(response_text, output_path)
-    engine.runAndWait()
+#     #engine.say(response_text)
+#     engine.save_to_file(response_text, output_path)
+#     engine.runAndWait()
 
+def turn_text_to_voice(response_text, output_path):
+    tts = gTTS(text=response_text, lang='en')
+    tts.save(output_path)
+    
 #-------------------------------------------
 #def turn_text_to_voice(response_text):
     # speech_config = speechsdk.SpeechConfig(subscription=AZURE_SPEECH_KEY, region=AZURE_REGION)
